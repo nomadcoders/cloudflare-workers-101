@@ -8,8 +8,12 @@ import home from "./home.html";
 
 export class ChatRoom {
   state: DurableObjectState;
+  users: WebSocket[];
+  messages: string[];
   constructor(state: DurableObjectState, env: Env) {
     this.state = state;
+    this.users = [];
+    this.messages = [];
   }
   handleHome() {
     return new Response(home, {
@@ -30,7 +34,13 @@ export class ChatRoom {
   }
   handleWebSocket(webSocket: WebSocket) {
     webSocket.accept();
+    this.users.push(webSocket);
     webSocket.send(JSON.stringify({ message: "hello from backend!" }));
+    this.messages.forEach((message) => webSocket.send(message));
+    webSocket.addEventListener("message", (event) => {
+      this.messages.push(event.data.toString());
+      this.users.forEach((user) => user.send(event.data));
+    });
   }
   async fetch(request: Request) {
     const { pathname } = new URL(request.url);

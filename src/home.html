@@ -6,17 +6,33 @@
   <body>
     <h1>Chat</h1>
     <button>Connect</button>
+    <form>
+      <input placeholder="write your msg." type="text" />
+      <button>Send</button>
+    </form>
+    <h3>Messages</h3>
+    <ul></ul>
     <script>
       const button = document.querySelector("button");
+      const form = document.querySelector("form");
+      const ul = document.querySelector("ul");
       button.addEventListener("click", () => {
         const socket = new WebSocket(`ws://${window.location.host}/connect`);
 
         socket.addEventListener("open", () => {
-          console.log("connected");
+          form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const input = form.querySelector("input");
+            socket.send(JSON.stringify({ message: input.value }));
+            input.value = "";
+          });
         });
 
         socket.addEventListener("message", (event) => {
-          console.log(event.data);
+          const data = JSON.parse(event.data);
+          const li = document.createElement("li");
+          li.innerText = data.message;
+          ul.appendChild(li);
         });
       });
     </script>
