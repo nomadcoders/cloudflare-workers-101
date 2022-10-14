@@ -8,5 +8,5 @@ kv_namespaces = [
 
 [durable_objects]
 bindings = [
-    {name = "COUNTER", class_name = "CounterObject"}
+    {name = "CHAT", class_name = "ChatRoom"}
 ]

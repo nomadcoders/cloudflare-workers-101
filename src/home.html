@@ -5,5 +5,20 @@
   </head>
   <body>
     <h1>Chat</h1>
+    <button>Connect</button>
+    <script>
+      const button = document.querySelector("button");
+      button.addEventListener("click", () => {
+        const socket = new WebSocket(`ws://${window.location.host}/connect`);
+
+        socket.addEventListener("open", () => {
+          console.log("connected");
+        });
+
+        socket.addEventListener("message", (event) => {
+          console.log(event.data);
+        });
+      });
+    </script>
   </body>
 </html>
