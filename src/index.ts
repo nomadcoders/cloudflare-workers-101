@@ -1,6 +1,6 @@
 export interface Env {
   // Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-  // MY_KV_NAMESPACE: KVNamespace;
+  DB: KVNamespace;
   //
   // Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
   // MY_DURABLE_OBJECT: DurableObjectNamespace;
@@ -20,6 +20,7 @@ export default {
   ): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/") {
+      await env.DB.put("hello", "how are you?");
       return new Response(home, {
         headers: {
           "Content-Type": "text/html;chartset=utf-8",
