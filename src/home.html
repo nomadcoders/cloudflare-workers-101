@@ -17,7 +17,8 @@
       const form = document.querySelector("form");
       const ul = document.querySelector("ul");
       button.addEventListener("click", () => {
-        const socket = new WebSocket(`ws://${window.location.host}/connect`);
+        const ws = window.location.protocol === "https:" ? "wss" : "ws";
+        const socket = new WebSocket(`${ws}://${window.location.host}/connect`);
 
         socket.addEventListener("open", () => {
           form.addEventListener("submit", (event) => {

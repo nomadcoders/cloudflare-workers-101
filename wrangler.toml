@@ -10,3 +10,7 @@ kv_namespaces = [
 bindings = [
     {name = "CHAT", class_name = "ChatRoom"}
 ]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatRoom"]
